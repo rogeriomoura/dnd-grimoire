@@ -8,13 +8,13 @@ The D&D 5e Grimoire Builder is currently in its initial development phase. The c
 2. Search for spells by name
 3. Add spells to their grimoire
 4. View detailed spell information in their grimoire
-5. Print their grimoire
+5. Export their grimoire as a PDF
 
 The current focus is on:
 
 - Ensuring the application works correctly with the D&D 5e API
 - Improving the user interface and experience
-- Enhancing the print functionality
+- Enhancing the PDF export functionality
 - Adding additional filtering options for spells
 
 ## Recent Changes
@@ -25,7 +25,7 @@ The current focus is on:
 - Implemented the SpellCard component for showing detailed spell information
 - Added basic styling with CSS
 - Integrated with the D&D 5e API for fetching spell data
-- Added print functionality
+- Added PDF export functionality
 
 ## Next Steps
 
@@ -45,9 +45,15 @@ The current focus is on:
    - Enhance the print layout
 
 3. **Add Error Handling**
+
    - Implement better error messages for API failures
    - Add fallback UI for when the API is unavailable
    - Handle edge cases in spell data
+
+4. **Deployment and CI/CD**
+   - ✅ Set up GitHub Pages deployment
+   - Configure automated deployments on push to main branch
+   - Add build status badges to README
 
 ### Medium-term Goals
 
@@ -62,8 +68,8 @@ The current focus is on:
    - Implement naming and organization features
 
 3. **Export Options**
-   - Add PDF export functionality
-   - Implement different print/export themes
+   - ✅ Add PDF export functionality
+   - Implement different export themes
 
 ## Active Decisions and Considerations
 
@@ -127,7 +133,7 @@ The current focus is on:
 
    - Users need immediate feedback when adding spells to their grimoire
    - Search functionality is critical for navigating the large spell list
-   - Print layout requires special attention to be useful at the gaming table
+   - PDF export layout requires special attention to be useful at the gaming table
 
 3. **Technical Insights**
 

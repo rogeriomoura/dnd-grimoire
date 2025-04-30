@@ -10,7 +10,7 @@
 - ✅ Selecting spells to add to grimoire
 - ✅ Fetching detailed spell information
 - ✅ Displaying spell details in the grimoire
-- ✅ Basic print functionality
+- ✅ PDF export functionality
 
 ### Components
 
@@ -26,6 +26,11 @@
 - ✅ Search input for filtering spells
 - ✅ Click interaction for selecting spells
 
+### Deployment
+
+- ✅ GitHub Pages deployment setup
+- ✅ Automated build and deploy process
+
 ## What's Left to Build
 
 ### Core Functionality
@@ -36,7 +41,7 @@
 - ❌ Saving grimoire to local storage
 - ❌ Loading grimoire from local storage
 - ❌ Managing multiple grimoires
-- ❌ Exporting grimoire as PDF
+- ✅ Exporting grimoire as PDF
 
 ### UI/UX Improvements
 
@@ -63,7 +68,7 @@ The application is in a **functional MVP (Minimum Viable Product)** state. Users
 1. View and search the complete list of D&D 5e spells
 2. Add spells to their grimoire
 3. View detailed information about selected spells
-4. Print their grimoire
+4. Export their grimoire as PDF
 
 The core functionality works as expected, but there are opportunities for enhancement in terms of features, UI/UX, and technical implementation.
 
@@ -79,7 +84,7 @@ The core functionality works as expected, but there are opportunities for enhanc
 
    - The current UI is functional but basic
    - Limited feedback during loading states
-   - Print layout could be improved for better usability
+   - PDF export layout could be improved for better usability
 
 3. **Feature Gaps**
 
@@ -110,7 +115,7 @@ The core functionality works as expected, but there are opportunities for enhanc
    - Add additional filtering options
    - Improve visual design
    - Add loading and error states
-   - Enhance print layout
+   - Enhance PDF export layout
 
 2. **Phase 2: Persistence and Management**
 
@@ -137,11 +142,12 @@ The core functionality works as expected, but there are opportunities for enhanc
 | Milestone                 | Status       | Target Completion |
 | ------------------------- | ------------ | ----------------- |
 | MVP Release               | ✅ Completed | -                 |
+| GitHub Pages Deployment   | ✅ Completed | -                 |
 | Enhanced Filtering        | 🔄 Planned   | -                 |
 | UI/UX Improvements        | 🔄 Planned   | -                 |
 | Local Storage Integration | 🔄 Planned   | -                 |
 | Multiple Grimoire Support | 🔄 Planned   | -                 |
-| Export Options            | 🔄 Planned   | -                 |
+| Export Options            | ✅ Completed | -                 |
 | Mobile Optimization       | 🔄 Planned   | -                 |
 
 This progress document will be updated as the project evolves, with completed features moved from "What's Left to Build" to "What Works" and new milestones added as needed.

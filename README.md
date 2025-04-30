@@ -1,6 +1,13 @@
-# Getting Started with Create React App
+# D&D 5e Grimoire Builder
+
+A web application that allows Dungeons & Dragons players to create, customize, and print their own spellbooks (grimoires).
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Deployment
+
+This application is deployed on GitHub Pages and can be accessed at:
+[https://rogeriomoura.github.io/dnd-grimoire](https://rogeriomoura.github.io/dnd-grimoire)
 
 ## Available Scripts
 
@@ -44,3 +51,12 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+## Deploying to GitHub Pages
+
+To deploy the latest version of the application to GitHub Pages:
+
+1. Make your changes to the codebase
+2. Run `npm run deploy` or `pnpm deploy`
+
+This will build the application and deploy it to the `gh-pages` branch of the repository, which is configured to serve the GitHub Pages site.

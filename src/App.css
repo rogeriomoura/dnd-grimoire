@@ -27,13 +27,19 @@
   padding: 20px;
 }
 
-/* Print Button */
-.print-button {
+/* Export Container and Button */
+.export-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.export-button {
   background-color: #7a200d;
   color: #f8f0dd;
   border: none;
   padding: 12px 24px;
-  margin: 20px 0;
   font-family: 'Cinzel', 'Times New Roman', serif;
   font-size: 1rem;
   font-weight: bold;
@@ -41,15 +47,37 @@
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin-bottom: 10px;
 }
 
-.print-button:hover {
+.export-button:hover {
   background-color: #9b2e13;
   transform: translateY(-2px);
 }
 
-.print-button:active {
+.export-button:active {
   transform: translateY(0);
+}
+
+.export-button:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.export-error {
+  color: #7a200d;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 4px;
+  padding: 10px 15px;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
 }
 
 /* Spell List Styles */
@@ -281,7 +309,7 @@
   }
 
   .spell-list-container,
-  .print-button {
+  .export-container {
     display: none;
   }
 
