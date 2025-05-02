@@ -5,6 +5,10 @@ import Grimoire from './Grimoire';
 import { Spell, GrimoireSpell } from './types';
 import { createGrimoirePDF } from './utils';
 
+// Import version from package.json using require
+const packageJson = require('../package.json');
+const { version } = packageJson;
+
 const BASE_API = 'https://www.dnd5eapi.co/api';
 const STORAGE_KEY = 'dnd-grimoire-spells';
 
@@ -140,6 +144,7 @@ function App() {
         </button>
         {exportError && <div className='export-error'>{exportError}</div>}
       </div>
+      <div className='version-display'>v{version}</div>
     </div>
   );
 }
