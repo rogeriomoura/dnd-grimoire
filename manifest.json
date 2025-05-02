@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "D&D Grimoire",
+  "name": "D&D 5e Grimoire Builder",
+  "description": "Create and manage your spellbook for Dungeons & Dragons 5th Edition",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +21,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#7a200d",
+  "background_color": "#f8f0dd"
 }
