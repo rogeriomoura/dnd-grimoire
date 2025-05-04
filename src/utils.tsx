@@ -1,6 +1,40 @@
 import { GrimoireSpell } from './types';
 import jsPDF from 'jspdf';
 
+// Cache keys and expiration time
+export const CACHE_KEYS = {
+  SPELL_LIST: 'dnd-grimoire-spell-list-cache',
+  SPELL_DETAILS: 'dnd-grimoire-spell-details-cache',
+};
+
+const CACHE_EXPIRATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+export interface CacheEntry<T> {
+  data: T;
+  timestamp: number;
+}
+
+export const getCachedData = <T,>(key: string): T | null => {
+  const cached = localStorage.getItem(key);
+  if (!cached) return null;
+
+  const { data, timestamp }: CacheEntry<T> = JSON.parse(cached);
+  if (Date.now() - timestamp > CACHE_EXPIRATION) {
+    localStorage.removeItem(key);
+    return null;
+  }
+
+  return data;
+};
+
+export const setCachedData = <T,>(key: string, data: T): void => {
+  const cacheEntry: CacheEntry<T> = {
+    data,
+    timestamp: Date.now(),
+  };
+  localStorage.setItem(key, JSON.stringify(cacheEntry));
+};
+
 // Font size constants
 const FONT_SIZES = {
   TITLE: 20, // Was 24
@@ -110,7 +144,6 @@ export const createGrimoirePDF = async (
       // Spell name
       pdf.setTextColor(COLORS.PRIMARY);
       pdf.setFontSize(FONT_SIZES.SPELL_NAME);
-      const nameWidth = pdf.getTextWidth(spell.name);
       pdf.text(spell.name, x + width / 2, currentY + 3, { align: 'center' });
       currentY += 12;
 

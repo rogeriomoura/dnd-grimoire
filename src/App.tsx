@@ -3,7 +3,12 @@ import './App.css';
 import SpellList from './SpellList';
 import Grimoire from './Grimoire';
 import { Spell, GrimoireSpell } from './types';
-import { createGrimoirePDF } from './utils';
+import {
+  createGrimoirePDF,
+  CACHE_KEYS,
+  getCachedData,
+  setCachedData,
+} from './utils';
 
 // Import version from package.json using require
 const packageJson = require('../package.json');
@@ -23,10 +28,18 @@ function App() {
   } | null>(null);
   const grimoireRef = useRef<HTMLDivElement>(null);
 
-  // Load spells from the API
+  // Load spells from cache or API
   useEffect(() => {
     async function loadSpells() {
       try {
+        // Try to get spells from cache first
+        const cachedSpells = getCachedData<Spell[]>(CACHE_KEYS.SPELL_LIST);
+        if (cachedSpells) {
+          setSpells(cachedSpells);
+          return;
+        }
+
+        // If not in cache, fetch from API
         const response = await fetch(`${BASE_API}/spells`);
         const data = await response.json();
         const spellList: Spell[] = data.results.map((spell: any) => ({
@@ -35,6 +48,9 @@ function App() {
           level: spell.level,
           url: spell.url,
         }));
+
+        // Cache the spell list
+        setCachedData(CACHE_KEYS.SPELL_LIST, spellList);
         setSpells(spellList);
       } catch (error) {
         console.error('Error loading spells:', error);
@@ -74,20 +90,31 @@ function App() {
         message: `${spell.name} is already in your grimoire`,
         type: 'info',
       });
-      // Clear feedback after 3 seconds
       setTimeout(() => setFeedback(null), 3000);
       return;
     }
 
     try {
-      const response = await fetch(`${BASE_API}/spells/${spell.index}`);
-      const spellDetails: GrimoireSpell = await response.json();
+      // Try to get spell details from cache first
+      const cacheKey = `${CACHE_KEYS.SPELL_DETAILS}-${spell.index}`;
+      const cachedSpellDetails = getCachedData<GrimoireSpell>(cacheKey);
+
+      let spellDetails: GrimoireSpell;
+      if (cachedSpellDetails) {
+        spellDetails = cachedSpellDetails;
+      } else {
+        // If not in cache, fetch from API
+        const response = await fetch(`${BASE_API}/spells/${spell.index}`);
+        spellDetails = await response.json();
+        // Cache the spell details
+        setCachedData(cacheKey, spellDetails);
+      }
+
       setGrimoire([...grimoire, spellDetails]);
       setFeedback({
         message: `Added ${spell.name} to your grimoire`,
         type: 'success',
       });
-      // Clear feedback after 3 seconds
       setTimeout(() => setFeedback(null), 3000);
     } catch (error) {
       console.error('Error loading spell details:', error);
@@ -95,7 +122,6 @@ function App() {
         message: 'Failed to add spell. Please try again.',
         type: 'error',
       });
-      // Clear feedback after 3 seconds
       setTimeout(() => setFeedback(null), 3000);
     }
   };
