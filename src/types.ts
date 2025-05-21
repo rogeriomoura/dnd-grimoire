@@ -3,6 +3,7 @@ export interface Spell {
   name: string;
   level: number;
   url: string;
+  school?: School;
 }
 
 interface School {

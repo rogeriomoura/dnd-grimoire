@@ -25,3 +25,19 @@ export const setCachedData = <T>(key: string, data: T): void => {
     console.error(`Error saving to cache for key ${key}:`, error);
   }
 };
+
+// Clear specific cache entries
+export const clearCache = (key?: string): void => {
+  try {
+    if (key) {
+      localStorage.removeItem(key);
+    } else {
+      // Clear all cached spell data
+      Object.values(CACHE_KEYS).forEach((cacheKey) => {
+        localStorage.removeItem(cacheKey);
+      });
+    }
+  } catch (error) {
+    console.error('Error clearing cache:', error);
+  }
+};

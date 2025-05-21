@@ -149,6 +149,78 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+/* Filter Controls */
+.filters {
+  margin-bottom: 20px;
+}
+
+.filter-controls {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.filter-select {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #d9b26f;
+  border-radius: 4px;
+  background-color: #fff;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: #2c2c2c;
+  cursor: pointer;
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: #7a200d;
+  box-shadow: 0 0 0 2px rgba(122, 32, 13, 0.2);
+}
+
+.spell-list {
+  max-height: calc(80vh - 150px);
+  overflow-y: auto;
+}
+
+.loading-state {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+  font-style: italic;
+}
+
+.empty-state {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  border: 1px dashed #d9b26f;
+  background-color: #f8f0dd;
+}
+
+.spell-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.spell-item-name {
+  font-weight: bold;
+  color: #2c2c2c;
+}
+
+.spell-item-meta {
+  display: flex;
+  gap: 15px;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.spell-item-meta span {
+  display: inline-flex;
+  align-items: center;
+}
+
 /* Grimoire Styles */
 .grimoire-container {
   flex: 1;
@@ -521,6 +593,10 @@
   .spell-details-grid {
     grid-template-columns: 1fr;
     gap: 8px;
+  }
+
+  .filter-controls {
+    flex-direction: column;
   }
 }
 

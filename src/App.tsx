@@ -30,6 +30,7 @@ const version = packageJson.version;
 function App() {
   // State management
   const [spells, setSpells] = useState<Spell[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [storedGrimoires, setStoredGrimoires] = useState<StoredGrimoires>({
     version: '',
     grimoires: [],
@@ -67,12 +68,15 @@ function App() {
   // Initialization effects
   useEffect(() => {
     const loadSpells = async () => {
+      setIsLoading(true);
       try {
         const spellList = await fetchSpellList();
         setSpells(spellList);
       } catch (error) {
         console.error('Error loading spells:', error);
         showFeedback('Failed to load spells. Please try again later.', 'error');
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -214,7 +218,11 @@ function App() {
       </header>
 
       <main>
-        <SpellList spells={spells} onSpellSelect={handleSpellSelect} />
+        <SpellList
+          spells={spells}
+          onSpellSelect={handleSpellSelect}
+          isLoading={isLoading}
+        />
         {activeGrimoire && (
           <Grimoire
             ref={grimoireRef}
