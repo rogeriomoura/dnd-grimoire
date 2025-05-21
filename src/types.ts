@@ -35,3 +35,24 @@ export interface GrimoireSpell {
   url: string;
   updated_at?: string;
 }
+
+export interface GrimoireMetadata {
+  id: string;
+  name: string;
+  createdAt: string;
+  lastModified: string;
+  version: string;
+  characterName?: string;
+  characterLevel?: number;
+  characterClass?: string;
+}
+
+export interface Grimoire extends GrimoireMetadata {
+  spells: GrimoireSpell[];
+}
+
+export interface StoredGrimoires {
+  version: string;
+  grimoires: Grimoire[];
+  lastActiveGrimoireId?: string;
+}

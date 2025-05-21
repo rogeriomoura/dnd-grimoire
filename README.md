@@ -4,6 +4,21 @@ A web application that allows Dungeons & Dragons players to create, customize, a
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Data Source
+
+This application uses the [D&D 5e API](https://www.dnd5eapi.co/) as its data source. The D&D 5e API is a free, open REST API that provides data for spells, monsters, and other game resources from the 5th Edition of Dungeons & Dragons.
+
+### API Features Used
+
+- Spell list retrieval
+- Detailed spell information
+- Spell filtering and search capabilities
+
+The API is publicly accessible and does not require authentication. For more information about the API and its capabilities, visit:
+
+- API Documentation: [https://www.dnd5eapi.co/docs/](https://www.dnd5eapi.co/docs/)
+- Base API URL: [https://www.dnd5eapi.co/api/](https://www.dnd5eapi.co/api/)
+
 ## Deployment
 
 This application is deployed on GitHub Pages and can be accessed at:
