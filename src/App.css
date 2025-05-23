@@ -247,10 +247,6 @@ body {
   pointer-events: none;
 }
 
-.search-input {
-  padding-left: var(--space-8);
-}
-
 .clear-search-btn {
   position: absolute;
   right: var(--space-3);
@@ -970,6 +966,85 @@ body {
   border: 1px solid var(--error-200);
   margin-bottom: var(--space-4);
   font-size: 0.875rem;
+}
+
+/* Error handling styles */
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 300px;
+  padding: var(--space-6);
+}
+
+.error-message {
+  background: white;
+  border: 1px solid var(--neutral-200);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  max-width: 500px;
+  box-shadow: var(--shadow-md);
+  text-align: center;
+}
+
+.error-message h3 {
+  color: var(--error-600);
+  margin-top: 0;
+  font-family: var(--font-display);
+  margin-bottom: var(--space-4);
+}
+
+.error-message p {
+  color: var(--neutral-700);
+  margin-bottom: var(--space-6);
+}
+
+.error-message button {
+  margin-top: var(--space-2);
+}
+
+/* API Rate Limiting Helpers */
+.rate-limit-warning {
+  background: var(--primary-50);
+  border: 1px solid var(--primary-200);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-4);
+  margin-top: var(--space-2);
+  color: var(--primary-700);
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.retry-progress {
+  height: 4px;
+  background: var(--neutral-200);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  margin-top: var(--space-3);
+}
+
+.retry-progress-bar {
+  height: 100%;
+  background: var(--primary-500);
+  border-radius: var(--radius-sm);
+  animation: progress 2s linear infinite;
+}
+
+@keyframes progress {
+  0% {
+    width: 0%;
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    width: 100%;
+  }
 }
 
 /* Modal Dialog */

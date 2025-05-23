@@ -15,6 +15,7 @@ import {
   // API utils
   fetchSpellList,
   fetchSpellDetails,
+  fetchApiData,
   // PDF utils
   createGrimoirePDF,
 } from './utils';
@@ -26,6 +27,8 @@ function App() {
   // State management
   const [spells, setSpells] = useState<Spell[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [apiError, setApiError] = useState<string | null>(null);
+  const [isRetrying, setIsRetrying] = useState(false);
   const [storedGrimoires, setStoredGrimoires] = useState<StoredGrimoires>({
     version: '',
     grimoires: [],
@@ -66,21 +69,42 @@ function App() {
 
   // Initialization effects
   useEffect(() => {
+    // Preload common API endpoints to warm up the cache
+    const preloadCommonData = async () => {
+      try {
+        await fetchApiData('/api/magic-schools');
+        console.log('Preloaded magic schools data');
+      } catch (error) {
+        console.error('Error preloading common data:', error);
+      }
+    };
+
     const loadSpells = async () => {
       setIsLoading(true);
+      setApiError(null);
+
       try {
         const spellList = await fetchSpellList();
         setSpells(spellList);
-      } catch (error) {
+
+        // Preload other common data in the background
+        preloadCommonData();
+      } catch (error: any) {
         console.error('Error loading spells:', error);
+        setApiError(
+          error instanceof Error
+            ? error.message
+            : 'Failed to load spells. Please try again later.'
+        );
         showFeedback('Failed to load spells. Please try again later.', 'error');
       } finally {
         setIsLoading(false);
+        setIsRetrying(false);
       }
     };
 
     loadSpells();
-  }, []);
+  }, [isRetrying]);
 
   useEffect(() => {
     const data = initializeStorage();
@@ -166,14 +190,22 @@ function App() {
     }
 
     try {
+      // Show feedback immediately that we're working on it
+      showFeedback(`Adding ${spell.name} to your grimoire...`, 'info');
+
       const spellDetails = await fetchSpellDetails(spell);
       const updatedData = addSpellToGrimoire(activeGrimoire.id, spellDetails);
       setStoredGrimoires(updatedData);
       updateActiveGrimoire(updatedData, activeGrimoire.id);
       showFeedback(`Added ${spell.name} to your grimoire`, 'success');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error adding spell:', error);
-      showFeedback(`Failed to add ${spell.name}`, 'error');
+      const errorMessage =
+        error instanceof Error && error.message.includes('rate limit')
+          ? `Rate limit reached. Please try again in a moment.`
+          : `Failed to add ${spell.name}`;
+
+      showFeedback(errorMessage, 'error');
     }
   };
 
@@ -255,11 +287,27 @@ function App() {
       <main className='main-content'>
         <div className='content-grid'>
           <div className='spell-browser'>
-            <SpellList
-              spells={spells}
-              onSpellSelect={handleSpellSelect}
-              isLoading={isLoading}
-            />
+            {apiError ? (
+              <div className='error-container'>
+                <div className='error-message'>
+                  <h3>🔮 Spell Loading Error</h3>
+                  <p>{apiError}</p>
+                  <button
+                    className='btn btn-primary'
+                    onClick={() => setIsRetrying(true)}
+                    disabled={isRetrying}
+                  >
+                    {isRetrying ? 'Retrying...' : 'Retry Loading Spells'}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <SpellList
+                spells={spells}
+                onSpellSelect={handleSpellSelect}
+                isLoading={isLoading}
+              />
+            )}
           </div>
           <div className='grimoire-panel'>
             {activeGrimoire ? (

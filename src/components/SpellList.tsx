@@ -146,6 +146,12 @@ const SpellList: React.FC<SpellListProps> = ({
           <div className='loading-state'>
             <div className='loading-spinner'></div>
             <p>Loading spells...</p>
+            {spells.length > 0 && (
+              <small className='rate-limit-warning'>
+                Loading complete spell details... ({spells.length} spells found
+                so far)
+              </small>
+            )}
           </div>
         ) : filteredSpells.length === 0 ? (
           <div className='empty-state'>
