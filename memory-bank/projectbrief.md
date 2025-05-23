@@ -16,9 +16,10 @@ The D&D 5e Grimoire Builder is a web application that allows Dungeons & Dragons 
 
    - Add selected spells to a personal grimoire
    - Display detailed spell information in the grimoire
-   - Create multiple grimoires with custom names
-   - Rename existing grimoires as needed
+   - Create multiple grimoires with custom names through intuitive modal interface
+   - Rename existing grimoires with persistent storage
    - Organize spells in a readable format
+   - Provide user feedback for grimoire operations through toasts
 
 3. **Printing Functionality**:
 
@@ -28,6 +29,9 @@ The D&D 5e Grimoire Builder is a web application that allows Dungeons & Dragons 
 4. **Data Integration**:
    - Fetch spell data from the D&D 5e API (https://www.dnd5eapi.co/api)
    - Handle API requests and responses efficiently
+   - Implement proper error handling and retry mechanisms
+   - Protect against API rate limiting with smart caching and request batching
+   - Provide graceful degradation during API unavailability
 
 ## Target Users
 

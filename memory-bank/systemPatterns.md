@@ -185,3 +185,170 @@ graph TD
    - Distributed to individual SpellCard components
 
 This architecture provides a clean separation of concerns while maintaining a simple data flow that is easy to understand and maintain.
+
+## API Management Patterns
+
+### Rate Limiting Protection
+
+The application implements several patterns to handle API rate limiting:
+
+1. **Smart Caching System**:
+
+   ```typescript
+   // Cache with expiration
+   interface CacheItem<T> {
+     value: T;
+     timestamp: number; // Time when cached
+     expiry: number; // Expiration time in ms
+   }
+
+   // Reading from cache with expiration check
+   export const getCachedItem = <T>(key: string): T | null => {
+     const item = localStorage.getItem(key);
+     if (!item) return null;
+
+     const cacheItem: CacheItem<T> = JSON.parse(item);
+     const now = Date.now();
+
+     // Return null if expired
+     if (now > cacheItem.timestamp + cacheItem.expiry) {
+       localStorage.removeItem(key);
+       return null;
+     }
+
+     return cacheItem.value;
+   };
+   ```
+
+2. **Request Batching**:
+
+   ```typescript
+   // Batch processing with concurrency control
+   export const batchFetchApiData = async <T>(
+     endpoints: string[],
+     concurrency = 3 // Control maximum parallel requests
+   ): Promise<T[]> => {
+     const results: T[] = [];
+     let index = 0;
+
+     // Process in batches to control concurrency
+     const processBatch = async () => {
+       const currentIndex = index++;
+       if (currentIndex >= endpoints.length) return;
+
+       try {
+         const data = await fetchApiData<T>(endpoints[currentIndex]);
+         results[currentIndex] = data;
+       } catch (error) {
+         console.error(`Error fetching ${endpoints[currentIndex]}:`, error);
+       }
+
+       // Process next batch
+       await processBatch();
+     };
+
+     // Start N concurrent batches
+     await Promise.all(
+       Array(concurrency)
+         .fill(null)
+         .map(() => processBatch())
+     );
+     return results;
+   };
+   ```
+
+3. **Exponential Backoff Retry**:
+
+   ```typescript
+   // Retry with exponential backoff
+   const fetchWithRetry = async <T>(
+     url: string,
+     retries = 3,
+     delay = 1000
+   ): Promise<T> => {
+     try {
+       const response = await fetch(url);
+
+       // Handle rate limiting
+       if (response.status === 429) {
+         if (retries > 0) {
+           // Wait with exponential backoff
+           await new Promise((resolve) => setTimeout(resolve, delay));
+           // Retry with increased delay
+           return fetchWithRetry<T>(url, retries - 1, delay * 2);
+         }
+       }
+
+       // Handle other responses
+       return await response.json();
+     } catch (error) {
+       if (retries > 0) {
+         await new Promise((resolve) => setTimeout(resolve, delay));
+         return fetchWithRetry<T>(url, retries - 1, delay * 2);
+       }
+       throw error;
+     }
+   };
+   ```
+
+4. **Progressive Loading Pattern**:
+
+   ```typescript
+   // Progressive loading with callback
+   export const fetchSpellList = async (
+     onFullDetailsLoaded?: (fullSpells: Spell[]) => void
+   ): Promise<Spell[]> => {
+     // First fetch basic spell list (lightweight)
+     const spellList = await fetchApiData<SpellListResponse>(
+       ENDPOINTS.SPELL_LIST
+     );
+
+     // Return basic data immediately for UI rendering
+     const basicSpells = spellList.results.map((spell) => ({
+       index: spell.index,
+       name: spell.name,
+       url: spell.url,
+       // Default values for required properties
+       level: 0,
+       school: { name: 'Unknown', index: 'unknown', url: '' },
+     }));
+
+     // Then fetch full details in background
+     batchFetchApiData<Spell>(spellList.results.map((spell) => spell.url)).then(
+       (fullSpells) => {
+         // Callback with complete data when available
+         if (onFullDetailsLoaded) {
+           onFullDetailsLoaded(fullSpells);
+         }
+       }
+     );
+
+     return basicSpells;
+   };
+   ```
+
+5. **In-Flight Request Tracking**:
+
+   ```typescript
+   // Track in-flight requests to prevent duplicates
+   const inFlightRequests: Record<string, Promise<any>> = {};
+
+   export const fetchApiData = async <T>(endpoint: string): Promise<T> => {
+     // Check if request is already in flight
+     if (inFlightRequests[endpoint]) {
+       return inFlightRequests[endpoint] as Promise<T>;
+     }
+
+     // Create and track the new request
+     const requestPromise = fetchWithRetry<T>(endpoint);
+     inFlightRequests[endpoint] = requestPromise;
+
+     try {
+       const result = await requestPromise;
+       return result;
+     } finally {
+       // Remove from tracking when complete
+       delete inFlightRequests[endpoint];
+     }
+   };
+   ```

@@ -38,15 +38,26 @@ const SpellList: React.FC<SpellListProps> = ({
 
   const filteredSpells = useMemo(() => {
     return spells.filter((spell) => {
+      // Match by name (case insensitive)
       const matchesSearch = spell.name
         .toLowerCase()
         .includes(filters.search.toLowerCase());
-      const matchesLevel =
-        !filters.level || spell.level === parseInt(filters.level);
 
-      const spellSchoolName = spell.school?.name?.toLowerCase();
-      const matchesSchool =
-        !filters.school || spellSchoolName === filters.school.toLowerCase();
+      // Match by level, handle default or undefined values
+      let matchesLevel = !filters.level; // If no level filter, it matches
+      if (filters.level) {
+        const filterLevel = parseInt(filters.level);
+        // If spell has a valid level that matches the filter
+        matchesLevel =
+          typeof spell.level === 'number' && spell.level === filterLevel;
+      }
+
+      // Match by school, handle missing school data
+      let matchesSchool = !filters.school; // If no school filter, it matches
+      if (filters.school && spell.school) {
+        const spellSchoolName = spell.school.name?.toLowerCase() || '';
+        matchesSchool = spellSchoolName === filters.school.toLowerCase();
+      }
 
       return matchesSearch && matchesLevel && matchesSchool;
     });
@@ -72,7 +83,6 @@ const SpellList: React.FC<SpellListProps> = ({
 
       <div className='spell-filters-container'>
         <div className='search-input-container'>
-          <span className='search-icon'>🔍</span>
           <input
             type='text'
             placeholder='Search for spells...'

@@ -239,14 +239,6 @@ body {
   align-items: center;
 }
 
-.search-icon {
-  position: absolute;
-  left: var(--space-3);
-  color: var(--neutral-500);
-  font-size: 0.9rem;
-  pointer-events: none;
-}
-
 .clear-search-btn {
   position: absolute;
   right: var(--space-3);

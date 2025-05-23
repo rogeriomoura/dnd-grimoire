@@ -132,7 +132,9 @@ export const batchFetchApiData = async <T>(
   return results;
 };
 
-export const fetchSpellList = async (): Promise<Spell[]> => {
+export const fetchSpellList = async (
+  onFullDetailsLoaded?: (fullSpells: Spell[]) => void
+): Promise<Spell[]> => {
   try {
     // Try to get spells from cache first
     const cachedSpells = getCachedData<Spell[]>(CACHE_KEYS.SPELL_LIST);
@@ -153,8 +155,9 @@ export const fetchSpellList = async (): Promise<Spell[]> => {
       return {
         index: spell.index,
         name: spell.name,
-        level: -1, // We'll fill this in with the batch request
+        level: 0, // Default to cantrip (level 0) instead of -1 to avoid filter issues
         url: spell.url,
+        school: { name: 'Unknown', url: '' }, // Default school to avoid filter issues
       };
     });
 
@@ -174,14 +177,19 @@ export const fetchSpellList = async (): Promise<Spell[]> => {
             spellDetails.find((d) => d && d.index === spell.index) || {};
           return {
             ...spell,
-            level: details.level ?? -1,
-            school: details.school,
+            level: details.level !== undefined ? details.level : 0,
+            school: details.school || { name: 'Unknown', url: '' },
           };
         });
 
         // Cache the full spell list
         if (fullSpellList.length > 0) {
           setCachedData(CACHE_KEYS.SPELL_LIST, fullSpellList);
+
+          // Call the callback if provided
+          if (onFullDetailsLoaded) {
+            onFullDetailsLoaded(fullSpellList);
+          }
         }
       } catch (error) {
         console.error('Error fetching full spell details:', error);

@@ -14,6 +14,8 @@
 - ✅ Displaying spell details in the grimoire
 - ✅ PDF export functionality
 - ✅ Smart caching of spell data for better performance
+- ✅ API rate limiting protection and error handling
+- ✅ Progressive loading of spell details
 
 ### Components
 
@@ -56,6 +58,30 @@
 - ✅ Mobile-responsive design
 
 ## Recent Improvements
+
+### May 25, 2025: API Rate Limiting Protection
+
+1. **API Request Optimization**
+
+   - Implemented smart caching system with 24-hour expiration
+   - Added API request batching with controlled concurrency (max 3 parallel requests)
+   - Implemented retry logic with exponential backoff for 429 errors
+   - Created tracking system to prevent duplicate in-flight requests
+   - Added proper error handling UI for rate limit occurrences
+
+2. **Progressive Data Loading**
+
+   - Implemented progressive loading of spell details to improve UX
+   - Added user feedback for loading states during spell retrieval
+   - Enhanced error state display with retry options
+   - Fixed filtering issues with default values for spell properties
+   - Optimized memory usage with better data handling
+
+3. **Deployment Improvements**
+
+   - Updated deploy scripts for better pnpm compatibility
+   - Created deployment script for easier publishing
+   - Added better error handling for build process
 
 ### May 23, 2025: Search & Filter Enhancement + Grimoire Naming
 

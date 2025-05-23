@@ -84,11 +84,27 @@ function App() {
       setApiError(null);
 
       try {
-        const spellList = await fetchSpellList();
+        // Use the callback to update spells when full details are loaded
+        const spellList = await fetchSpellList((fullSpellList) => {
+          console.log('Full spell details loaded, updating state...');
+          setSpells(fullSpellList);
+          // If we were showing loading state, clear it now
+          setIsLoading(false);
+        });
+
         setSpells(spellList);
 
         // Preload other common data in the background
         preloadCommonData();
+
+        // If we have minimal spell data but no level/school info yet,
+        // keep loading state active until full details arrive
+        const hasFullDetails = spellList.some(
+          (s) => s.level > 0 || (s.school && s.school.name !== 'Unknown')
+        );
+        if (hasFullDetails) {
+          setIsLoading(false);
+        }
       } catch (error: any) {
         console.error('Error loading spells:', error);
         setApiError(
@@ -97,8 +113,9 @@ function App() {
             : 'Failed to load spells. Please try again later.'
         );
         showFeedback('Failed to load spells. Please try again later.', 'error');
-      } finally {
         setIsLoading(false);
+        setIsRetrying(false);
+      } finally {
         setIsRetrying(false);
       }
     };
