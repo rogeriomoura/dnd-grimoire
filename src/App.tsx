@@ -1,12 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import { Grimoire, SpellList, GrimoireNameModal } from './components';
-import {
-  Spell,
-  GrimoireSpell,
-  StoredGrimoires,
-  Grimoire as GrimoireType,
-} from './types';
+import { Spell, StoredGrimoires, Grimoire as GrimoireType } from './types';
 import {
   // Storage utils
   initializeStorage,
