@@ -6,27 +6,82 @@ The D&D 5e Grimoire Builder follows a client-side single-page application (SPA) 
 
 ```
 dnd-grimoire/
-├── public/           # Static assets and HTML entry point
-└── src/              # Source code
-    ├── App.tsx       # Main application component
-    ├── SpellList.tsx # Component for displaying and searching spells
-    ├── Grimoire.tsx  # Component for displaying the grimoire
-    ├── SpellCard.tsx # Component for displaying a single spell
-    ├── types.ts      # TypeScript interfaces
-    └── ...           # Other React boilerplate files
+├── public/            # Static assets and HTML entry point
+└── src/               # Source code
+    ├── App.tsx        # Main application component
+    ├── App.css        # Global styles and design system
+    ├── types.ts       # TypeScript interfaces and types
+    ├── components/    # UI components
+    │   ├── index.ts   # Component exports
+    │   ├── SpellList.tsx # Search and filter spell component
+    │   ├── Grimoire.tsx  # Grimoire display component
+    │   ├── SpellCard.tsx # Individual spell component
+    │   └── GrimoireNameModal.tsx # Modal for naming grimoires
+    ├── utils/         # Utility functions
+    │   ├── index.ts   # Util exports
+    │   ├── api.ts     # API-related functions
+    │   ├── cache.ts   # Caching utilities
+    │   ├── storage.ts # Local storage management
+    │   └── pdf.ts     # PDF generation
+    └── ...            # Other React boilerplate files
 ```
 
 ## Key Technical Decisions
 
 1. **React Framework**: Chosen for its component-based architecture, which aligns well with the UI elements needed for this application.
 
-2. **TypeScript**: Used to provide type safety and better developer experience, particularly important for handling the complex spell data structures.
+## UI Component Patterns
 
-3. **External API Integration**: The application fetches spell data from the D&D 5e API (https://www.dnd5eapi.co/api) rather than maintaining its own database, reducing maintenance overhead.
+### Modal Dialog Pattern
 
-4. **Client-Side Only**: The application runs entirely in the browser without a backend, simplifying deployment and reducing infrastructure needs.
+The application uses a reusable modal dialog pattern for user interactions that require focused input:
 
-5. **Functional Components with Hooks**: Modern React patterns are used throughout the application for state management and side effects.
+```tsx
+// GrimoireNameModal.tsx
+interface GrimoireNameModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (name: string) => void;
+  initialName?: string;
+  title: string;
+  saveLabel?: string;
+}
+
+export const GrimoireNameModal: React.FC<GrimoireNameModalProps> = ({
+  isOpen,
+  onClose,
+  onSave,
+  initialName = '',
+  title,
+  saveLabel = 'Save',
+}) => {
+  // Modal implementation
+};
+```
+
+The modal component is designed to be reusable for different contexts:
+
+- Creating new grimoires (empty initial name)
+- Renaming existing grimoires (prepopulated with current name)
+- Customizable title and button labels
+
+### Filter and Search Pattern
+
+The application uses a consistent pattern for filtering and searching data:
+
+1. **State Management**: Using React useState for filter criteria
+2. **Memoized Filtering**: Using useMemo for performance optimization
+3. **Controlled Components**: Form elements as controlled components
+4. **Clear Actions**: Providing intuitive ways to clear filters
+5. **Visual Feedback**: Showing count of filtered results
+
+6. **TypeScript**: Used to provide type safety and better developer experience, particularly important for handling the complex spell data structures.
+
+7. **External API Integration**: The application fetches spell data from the D&D 5e API (https://www.dnd5eapi.co/api) rather than maintaining its own database, reducing maintenance overhead.
+
+8. **Client-Side Only**: The application runs entirely in the browser without a backend, simplifying deployment and reducing infrastructure needs.
+
+9. **Functional Components with Hooks**: Modern React patterns are used throughout the application for state management and side effects.
 
 ## Design Patterns in Use
 

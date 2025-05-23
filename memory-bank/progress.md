@@ -24,12 +24,14 @@
 
 ### UI/UX
 
-- ✅ Basic styling with CSS
-- ✅ Responsive layout for desktop
+- ✅ Modern styling with CSS design system
+- ✅ Responsive layout for desktop and mobile
 - ✅ Advanced spell filtering system
 - ✅ Loading states for async operations
 - ✅ Click interaction for selecting spells
 - ✅ Empty states and loading indicators
+- ✅ Toast notifications for user feedback
+- ✅ Grid-based responsive layout
 
 ### Deployment
 
@@ -48,12 +50,70 @@
 
 ### UI/UX Improvements
 
-- ❌ Enhanced visual design
+- ✅ Enhanced visual design
 - ✅ Loading indicators
 - ✅ Error messages for API failures
-- ❌ Mobile-responsive design improvements
+- ✅ Mobile-responsive design
 
-## Recent Improvements (May 20, 2025)
+## Recent Improvements
+
+### May 23, 2025: Search & Filter Enhancement + Grimoire Naming
+
+1. **Enhanced Search & Filter UI**
+
+   - Redesigned search bar with icon and clear button
+   - Added spell count indicator showing filtered/total spells
+   - Improved filter layout with labeled sections and groups
+   - Added reset filters button for better UX
+   - Enhanced visual feedback for filter interactions
+   - Improved empty and loading states for better user experience
+
+2. **Custom Grimoire Naming**
+
+   - Added ability to set custom names when creating grimoires
+   - Implemented rename functionality for existing grimoires
+   - Created modal dialog component for name input
+   - Added rename button with intuitive icon to grimoire header
+   - Enhanced user feedback with toast notifications for naming actions
+
+3. **UI Component Improvements**
+
+   - Enhanced select elements with custom styling and dropdown arrows
+   - Improved input fields with better focus states and visual feedback
+   - Added responsive adjustments for smaller screens
+   - Refined spacing and layout for better visual hierarchy
+
+### May 22, 2025: UI Modernization
+
+1. **Complete UI Redesign**
+
+   - Implemented modern design system with CSS custom properties
+   - Created cohesive color palette with semantic variables
+   - Added Google Fonts integration (Cinzel + Inter)
+   - Developed consistent typography, spacing, and shadow system
+
+2. **Layout Improvements**
+
+   - Designed modern header with gradient background
+   - Created responsive grid-based content layout
+   - Implemented sticky spell browser panel
+   - Enhanced grimoire display with better card styling
+
+3. **Component Styling**
+
+   - Modernized button styles with hover effects and animations
+   - Improved form controls (inputs, selects) with modern styling
+   - Added toast notification system with animations
+   - Enhanced spell cards with better typography and spacing
+   - Added loading spinner animations
+
+4. **Code Organization**
+   - Restructured components into dedicated folder
+   - Cleaned up CSS by removing unused legacy styles
+   - Added better semantic class naming
+   - Improved component structure for better maintainability
+
+### May 20, 2025: Filtering & Data Management
 
 1. **Enhanced Spell Filtering**
 

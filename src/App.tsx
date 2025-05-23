@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
-import SpellList from './SpellList';
-import Grimoire from './Grimoire';
+import { Grimoire, SpellList, GrimoireNameModal } from './components';
 import {
   Spell,
   GrimoireSpell,
@@ -17,6 +16,7 @@ import {
   setActiveGrimoire as setActiveGrimoireStorage,
   addSpellToGrimoire,
   removeSpellFromGrimoire,
+  updateGrimoireName,
   // API utils
   fetchSpellList,
   fetchSpellDetails,
@@ -44,6 +44,10 @@ function App() {
     message: string;
     type: 'success' | 'error' | 'info';
   } | null>(null);
+
+  // Modal state management
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
 
   const grimoireRef = useRef<HTMLDivElement>(null);
 
@@ -116,6 +120,19 @@ function App() {
     setStoredGrimoires(updatedData);
     setActiveGrimoire(newGrimoire);
     showFeedback(`Created new grimoire: ${name}`, 'success');
+  };
+
+  const openCreateGrimoireModal = () => {
+    setIsCreateModalOpen(true);
+  };
+
+  const handleRenameGrimoire = (newName: string) => {
+    if (!activeGrimoire) return;
+
+    const updatedData = updateGrimoireName(activeGrimoire.id, newName);
+    setStoredGrimoires(updatedData);
+    updateActiveGrimoire(updatedData, activeGrimoire.id);
+    showFeedback(`Renamed grimoire to: ${newName}`, 'success');
   };
 
   const handleSelectGrimoire = (id: string) => {
@@ -193,54 +210,132 @@ function App() {
   // Render
   return (
     <div className='App'>
-      <header className='App-header'>
-        <h1>D&D 5e Grimoire Builder</h1>
-        <div className='grimoire-controls'>
-          <select
-            value={activeGrimoire?.id || ''}
-            onChange={(e) => handleSelectGrimoire(e.target.value)}
-          >
-            {storedGrimoires.grimoires.map((g) => (
-              <option key={g.id} value={g.id}>
-                {g.name}
-              </option>
-            ))}
-          </select>
-          <button onClick={() => handleCreateGrimoire('New Grimoire')}>
-            New Grimoire
-          </button>
-          {activeGrimoire && (
-            <button onClick={() => handleDeleteGrimoire(activeGrimoire.id)}>
-              Delete Grimoire
-            </button>
-          )}
+      <header className='header'>
+        <div className='header-content'>
+          <div className='header-title'>
+            <h1>D&D 5e Grimoire Builder</h1>
+            <span className='header-subtitle'>
+              Create your perfect spellbook
+            </span>
+          </div>
+          <div className='header-controls'>
+            <div className='grimoire-selector'>
+              <label htmlFor='grimoire-select'>Active Grimoire:</label>
+              <select
+                id='grimoire-select'
+                value={activeGrimoire?.id || ''}
+                onChange={(e) => handleSelectGrimoire(e.target.value)}
+                className='select-modern'
+              >
+                <option value='' disabled>
+                  Select a grimoire...
+                </option>
+                {storedGrimoires.grimoires.map((g) => (
+                  <option key={g.id} value={g.id}>
+                    {g.name} ({g.spells.length} spells)
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className='header-actions'>
+              <button
+                onClick={openCreateGrimoireModal}
+                className='btn btn-primary'
+              >
+                <span>📚</span> New Grimoire
+              </button>
+              {activeGrimoire && (
+                <button
+                  onClick={() => handleDeleteGrimoire(activeGrimoire.id)}
+                  className='btn btn-danger'
+                >
+                  <span>🗑️</span> Delete
+                </button>
+              )}
+            </div>
+          </div>
         </div>
       </header>
 
-      <main>
-        <SpellList
-          spells={spells}
-          onSpellSelect={handleSpellSelect}
-          isLoading={isLoading}
-        />
-        {activeGrimoire && (
-          <Grimoire
-            ref={grimoireRef}
-            spells={activeGrimoire.spells}
-            onRemoveSpell={handleRemoveSpell}
-            onExport={handleExportPDF}
-            isExporting={isExporting}
-            exportError={exportError}
-          />
-        )}
+      <main className='main-content'>
+        <div className='content-grid'>
+          <div className='spell-browser'>
+            <SpellList
+              spells={spells}
+              onSpellSelect={handleSpellSelect}
+              isLoading={isLoading}
+            />
+          </div>
+          <div className='grimoire-panel'>
+            {activeGrimoire ? (
+              <Grimoire
+                ref={grimoireRef}
+                name={activeGrimoire.name}
+                spells={activeGrimoire.spells}
+                onRemoveSpell={handleRemoveSpell}
+                onRename={() => setIsRenameModalOpen(true)}
+                onExport={handleExportPDF}
+                isExporting={isExporting}
+                exportError={exportError}
+              />
+            ) : (
+              <div className='no-grimoire-state'>
+                <div className='no-grimoire-content'>
+                  <h3>No Grimoire Selected</h3>
+                  <p>
+                    Create a new grimoire or select an existing one to get
+                    started.
+                  </p>
+                  <button
+                    onClick={openCreateGrimoireModal}
+                    className='btn btn-primary btn-large'
+                  >
+                    <span>✨</span> Create Your First Grimoire
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
       </main>
 
       {feedback && (
-        <div className={`feedback feedback-${feedback.type}`}>
-          {feedback.message}
+        <div className={`toast toast-${feedback.type}`}>
+          <div className='toast-content'>
+            <span className='toast-icon'>
+              {feedback.type === 'success' && '✅'}
+              {feedback.type === 'error' && '❌'}
+              {feedback.type === 'info' && 'ℹ️'}
+            </span>
+            {feedback.message}
+          </div>
         </div>
       )}
-      <div className='version-display'>v{version}</div>
+      <div className='version-badge'>v{version}</div>
+
+      {/* Create Grimoire Modal */}
+      <GrimoireNameModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        onSave={(name) => {
+          handleCreateGrimoire(name);
+          setIsCreateModalOpen(false);
+        }}
+        title='Create New Grimoire'
+        saveLabel='Create'
+      />
+
+      {/* Rename Grimoire Modal */}
+      {activeGrimoire && (
+        <GrimoireNameModal
+          isOpen={isRenameModalOpen}
+          onClose={() => setIsRenameModalOpen(false)}
+          onSave={handleRenameGrimoire}
+          initialName={activeGrimoire.name}
+          title='Rename Grimoire'
+          saveLabel='Rename'
+        />
+      )}
     </div>
   );
 }

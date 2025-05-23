@@ -9,12 +9,15 @@ The D&D 5e Grimoire Builder is a web application that allows Dungeons & Dragons 
 1. **Spell Browsing**:
 
    - Display a searchable list of all D&D 5e spells
-   - Allow filtering/searching by name
+   - Allow filtering/searching by name, level, and school
+   - Provide intuitive UI for browsing and selecting spells
 
 2. **Grimoire Building**:
 
    - Add selected spells to a personal grimoire
    - Display detailed spell information in the grimoire
+   - Create multiple grimoires with custom names
+   - Rename existing grimoires as needed
    - Organize spells in a readable format
 
 3. **Printing Functionality**:

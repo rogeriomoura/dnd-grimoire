@@ -101,6 +101,23 @@ export const setActiveGrimoire = (id: string): void => {
   saveGrimoires(data);
 };
 
+// Update grimoire name
+export const updateGrimoireName = (
+  id: string,
+  newName: string
+): StoredGrimoires => {
+  const data = initializeStorage();
+  const grimoire = data.grimoires.find((g) => g.id === id);
+
+  if (grimoire) {
+    grimoire.name = newName;
+    grimoire.lastModified = new Date().toISOString();
+    saveGrimoires(data);
+  }
+
+  return data;
+};
+
 // Get a grimoire by ID
 export const getGrimoire = (id: string): Grimoire | undefined => {
   const data = initializeStorage();
