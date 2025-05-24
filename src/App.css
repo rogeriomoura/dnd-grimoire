@@ -417,6 +417,13 @@ body {
   color: var(--neutral-400);
 }
 
+/* Spell List Container */
+.spell-list-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 /* Grimoire Panel */
 .grimoire-panel {
   background: white;
@@ -1178,8 +1185,280 @@ body {
   gap: var(--space-3);
 }
 
+/* Mobile floating add button */
+.mobile-add-spell-btn {
+  display: none;
+  position: fixed;
+  bottom: var(--space-6);
+  right: var(--space-6);
+  background: linear-gradient(135deg, var(--primary-600), var(--primary-700));
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: var(--space-4) var(--space-6);
+  box-shadow: var(--shadow-xl);
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  gap: var(--space-2);
+  align-items: center;
+  z-index: 100;
+  transition: all 0.3s ease;
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.mobile-add-spell-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 25px 50px -5px rgba(0, 0, 0, 0.25);
+}
+
+.mobile-add-spell-btn:active {
+  transform: translateY(0);
+}
+
+.mobile-add-spell-btn span:first-child {
+  font-size: 1.2em;
+}
+
+/* Mobile overlay */
+.mobile-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 150;
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Mobile browser header */
+.mobile-browser-header {
+  display: none;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--neutral-200);
+  background: white;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.mobile-browser-header h2 {
+  font-family: var(--font-display);
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--neutral-800);
+}
+
+.mobile-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--neutral-600);
+  cursor: pointer;
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  transition: all 0.2s ease;
+}
+
+.mobile-close-btn:hover {
+  background: var(--neutral-100);
+  color: var(--neutral-800);
+}
+
+.mobile-close-btn:active {
+  transform: scale(0.95);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutToRight {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes slideInFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Responsive Design */
-@media (max-width: 1024px) {
+/* Mobile-first responsive design */
+@media (max-width: 768px) {
+  /* Main layout changes for mobile */
+  .content-grid {
+    display: block;
+    padding: 0 var(--space-4);
+  }
+
+  /* Hide spell browser by default on mobile */
+  .spell-browser {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: white;
+    z-index: 200;
+    max-height: none;
+    height: 100vh;
+    border-radius: 0;
+    box-shadow: none;
+    overflow-y: auto;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-out;
+    display: block;
+  }
+
+  /* Show spell browser when mobile-open class is added */
+  .spell-browser.mobile-open {
+    transform: translateX(0);
+    animation: slideInFromRight 0.3s ease-out;
+  }
+
+  /* Show mobile-specific elements */
+  .mobile-add-spell-btn {
+    display: flex;
+  }
+
+  .mobile-overlay {
+    display: block;
+  }
+
+  .mobile-browser-header {
+    display: flex;
+  }
+
+  /* Grimoire panel takes full width on mobile */
+  .grimoire-panel {
+    width: 100%;
+    margin: 0;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+  }
+
+  /* Header adjustments for mobile */
+  .header-content {
+    flex-direction: column;
+    gap: var(--space-4);
+    text-align: center;
+    padding: 0 var(--space-4);
+  }
+
+  .header-controls {
+    flex-direction: column;
+    width: 100%;
+    max-width: 400px;
+    gap: var(--space-4);
+  }
+
+  .header-title h1 {
+    font-size: 2rem;
+  }
+
+  .header-subtitle {
+    font-size: 1rem;
+  }
+
+  /* Spell filters adjustments for mobile */
+  .spell-list-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .spell-browser-header,
+  .spell-filters-container,
+  .spell-list-content {
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
+  }
+
+  .spell-details-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .filter-controls {
+    grid-template-columns: 1fr;
+  }
+
+  /* Toast adjustments for mobile */
+  .toast {
+    bottom: calc(var(--space-6) + 60px); /* Account for floating button */
+    right: var(--space-4);
+    left: var(--space-4);
+    max-width: none;
+    animation: slideInFromBottom 0.3s ease-out;
+  }
+
+  /* Additional mobile-specific improvements */
+  .grimoire-panel {
+    margin-bottom: calc(
+      var(--space-16) + 60px
+    ); /* Account for floating button */
+  }
+
+  /* Make spell list items more touch-friendly */
+  .spell-list-item {
+    padding: var(--space-4);
+    min-height: 60px;
+  }
+
+  .spell-list-item:active {
+    background: var(--primary-50);
+    transform: scale(0.98);
+  }
+}
+
+/* Medium screens - tablet landscape */
+@media (min-width: 769px) and (max-width: 1024px) {
   .header-content {
     flex-direction: column;
     gap: var(--space-6);
@@ -1201,34 +1480,31 @@ body {
     position: static;
     max-height: 400px;
   }
+
+  /* Hide mobile-specific elements on tablet */
+  .mobile-add-spell-btn,
+  .mobile-overlay,
+  .mobile-browser-header {
+    display: none;
+  }
 }
 
-@media (max-width: 768px) {
-  .header-content {
-    padding: 0 var(--space-4);
-  }
-
+/* Large screens - keep current desktop layout */
+@media (min-width: 1025px) {
   .content-grid {
-    padding: 0 var(--space-4);
+    grid-template-columns: 400px 1fr;
   }
 
-  .spell-details-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .spell-browser {
+    position: sticky;
+    top: var(--space-8);
   }
 
-  .filter-controls {
-    grid-template-columns: 1fr;
-  }
-
-  .spell-browser-header,
-  .spell-filters-container,
-  .spell-list-content {
-    padding-left: var(--space-4);
-    padding-right: var(--space-4);
-  }
-
-  .header-title h1 {
-    font-size: 2rem;
+  /* Hide mobile-specific elements on desktop */
+  .mobile-add-spell-btn,
+  .mobile-overlay,
+  .mobile-browser-header {
+    display: none;
   }
 }
 
@@ -1241,11 +1517,15 @@ body {
     font-size: 1.75rem;
   }
 
-  .toast {
+  .mobile-add-spell-btn {
     bottom: var(--space-4);
     right: var(--space-4);
-    left: var(--space-4);
-    max-width: none;
+    padding: var(--space-3) var(--space-5);
+    font-size: 0.9rem;
+  }
+
+  .toast {
+    bottom: calc(var(--space-4) + 55px);
   }
 }
 

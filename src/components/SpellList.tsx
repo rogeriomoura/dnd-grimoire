@@ -73,7 +73,7 @@ const SpellList: React.FC<SpellListProps> = ({
     };
 
   return (
-    <div className='spell-browser'>
+    <div className='spell-list-container'>
       <div className='spell-browser-header'>
         <h2>Spell List</h2>
         <div className='spell-count'>

@@ -47,6 +47,10 @@ function App() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isRenameModalOpen, setIsRenameModalOpen] = useState(false);
 
+  // Mobile view management
+  const [isMobileSpellBrowserOpen, setIsMobileSpellBrowserOpen] =
+    useState(false);
+
   const grimoireRef = useRef<HTMLDivElement>(null);
 
   // Utility functions
@@ -215,6 +219,9 @@ function App() {
       setStoredGrimoires(updatedData);
       updateActiveGrimoire(updatedData, activeGrimoire.id);
       showFeedback(`Added ${spell.name} to your grimoire`, 'success');
+
+      // Close mobile spell browser after adding spell
+      setIsMobileSpellBrowserOpen(false);
     } catch (error: any) {
       console.error('Error adding spell:', error);
       const errorMessage =
@@ -303,7 +310,21 @@ function App() {
 
       <main className='main-content'>
         <div className='content-grid'>
-          <div className='spell-browser'>
+          <div
+            className={`spell-browser ${
+              isMobileSpellBrowserOpen ? 'mobile-open' : ''
+            }`}
+          >
+            <div className='mobile-browser-header'>
+              <h2>Browse Spells</h2>
+              <button
+                className='mobile-close-btn'
+                onClick={() => setIsMobileSpellBrowserOpen(false)}
+                aria-label='Close spell browser'
+              >
+                ✕
+              </button>
+            </div>
             {apiError ? (
               <div className='error-container'>
                 <div className='error-message'>
@@ -357,6 +378,35 @@ function App() {
             )}
           </div>
         </div>
+
+        {/* Mobile floating add button */}
+        {activeGrimoire && (
+          <button
+            className='mobile-add-spell-btn'
+            onClick={() => setIsMobileSpellBrowserOpen(true)}
+            aria-label='Add spells to grimoire'
+            type='button'
+          >
+            <span>📚</span>
+            <span>Add Spells</span>
+          </button>
+        )}
+
+        {/* Mobile overlay */}
+        {isMobileSpellBrowserOpen && (
+          <div
+            className='mobile-overlay'
+            onClick={() => setIsMobileSpellBrowserOpen(false)}
+            role='button'
+            tabIndex={0}
+            aria-label='Close spell browser'
+            onKeyDown={(e) => {
+              if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') {
+                setIsMobileSpellBrowserOpen(false);
+              }
+            }}
+          />
+        )}
       </main>
 
       {feedback && (

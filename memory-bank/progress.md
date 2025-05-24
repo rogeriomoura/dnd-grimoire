@@ -59,6 +59,30 @@
 
 ## Recent Improvements
 
+### May 24, 2025: Mobile-First UX Redesign
+
+1. **Mobile Navigation Redesign**
+
+   - Implemented mobile-first approach with grimoire-priority layout
+   - Added floating "Add Spells" button for intuitive spell browsing access
+   - Created full-screen slide-out spell browser for mobile devices
+   - Eliminated problematic double-scroll issue that was breaking mobile UI
+   - Added overlay and close button for intuitive navigation
+
+2. **Responsive Layout Improvements**
+
+   - Mobile (≤768px): Grimoire-first with floating add button and slide-out spell browser
+   - Tablet (769-1024px): Single-column layout with traditional spell browser
+   - Desktop (≥1025px): Maintains current two-column side-by-side layout
+   - Improved touch targets and spacing for mobile interaction
+
+3. **UX Flow Optimization**
+
+   - Spell browser automatically closes after adding a spell on mobile
+   - Toast notifications repositioned to avoid floating button overlap
+   - Maintained all existing functionality while improving mobile usability
+   - Better visual hierarchy with grimoire as primary focus on mobile
+
 ### May 25, 2025: API Rate Limiting Protection
 
 1. **API Request Optimization**
