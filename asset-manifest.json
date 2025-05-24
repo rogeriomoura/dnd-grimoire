@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.css": "/dnd-grimoire/static/css/main.5e1bf79b.css",
-    "main.js": "/dnd-grimoire/static/js/main.ea927549.js",
+    "main.css": "/dnd-grimoire/static/css/main.1e8a3cc1.css",
+    "main.js": "/dnd-grimoire/static/js/main.e5a0c3d3.js",
     "static/js/321.f47eb5f6.chunk.js": "/dnd-grimoire/static/js/321.f47eb5f6.chunk.js",
     "static/js/921.1f10a776.chunk.js": "/dnd-grimoire/static/js/921.1f10a776.chunk.js",
     "static/js/668.7d3dd17c.chunk.js": "/dnd-grimoire/static/js/668.7d3dd17c.chunk.js",
     "static/js/555.17cca3f3.chunk.js": "/dnd-grimoire/static/js/555.17cca3f3.chunk.js",
     "index.html": "/dnd-grimoire/index.html",
-    "main.5e1bf79b.css.map": "/dnd-grimoire/static/css/main.5e1bf79b.css.map",
-    "main.ea927549.js.map": "/dnd-grimoire/static/js/main.ea927549.js.map",
+    "main.1e8a3cc1.css.map": "/dnd-grimoire/static/css/main.1e8a3cc1.css.map",
+    "main.e5a0c3d3.js.map": "/dnd-grimoire/static/js/main.e5a0c3d3.js.map",
     "321.f47eb5f6.chunk.js.map": "/dnd-grimoire/static/js/321.f47eb5f6.chunk.js.map",
     "921.1f10a776.chunk.js.map": "/dnd-grimoire/static/js/921.1f10a776.chunk.js.map",
     "668.7d3dd17c.chunk.js.map": "/dnd-grimoire/static/js/668.7d3dd17c.chunk.js.map",
     "555.17cca3f3.chunk.js.map": "/dnd-grimoire/static/js/555.17cca3f3.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.5e1bf79b.css",
-    "static/js/main.ea927549.js"
+    "static/css/main.1e8a3cc1.css",
+    "static/js/main.e5a0c3d3.js"
   ]
 }
