@@ -395,7 +395,9 @@ function App() {
         {/* Mobile overlay */}
         {isMobileSpellBrowserOpen && (
           <div
-            className='mobile-overlay'
+            className={`mobile-overlay ${
+              isMobileSpellBrowserOpen ? 'active' : ''
+            }`}
             onClick={() => setIsMobileSpellBrowserOpen(false)}
             role='button'
             tabIndex={0}

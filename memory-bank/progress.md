@@ -83,6 +83,34 @@
    - Maintained all existing functionality while improving mobile usability
    - Better visual hierarchy with grimoire as primary focus on mobile
 
+### May 24, 2025: Mobile Animation Optimization
+
+1. **Smooth Slide-in Animation**
+
+   - Fixed stuttering animation by removing conflicting CSS transition and animation
+   - Upgraded to hardware-accelerated `translate3d()` transforms for better performance
+   - Added `will-change` property to optimize browser rendering pipeline
+   - Used Material Design motion curves (`cubic-bezier(0.4, 0.0, 0.2, 1)`) for natural feeling animations
+
+2. **Performance Optimizations**
+
+   - Added `contain: layout style paint` to prevent layout thrashing during animations
+   - Used `visibility` and `opacity` for smoother show/hide transitions
+   - Optimized overlay fade-in with dedicated animation timing
+   - Added `-webkit-overflow-scrolling: touch` for smooth mobile scrolling
+
+3. **Animation Enhancements**
+
+   - Increased animation duration to 0.35s for smoother perception
+   - Added slight opacity transition for more polished feel
+   - Implemented proper closing animation with `slideOutToRight`
+   - Enhanced floating button with 3D transform acceleration
+
+4. **Layout Stability**
+   - Added `overflow-x: hidden` to prevent horizontal scrollbar flicker
+   - Used `contain: layout` on spell list content to prevent reflows
+   - Optimized `will-change` properties to help browser prepare for animations
+
 ### May 25, 2025: API Rate Limiting Protection
 
 1. **API Request Optimization**

@@ -1208,12 +1208,12 @@ body {
 }
 
 .mobile-add-spell-btn:hover {
-  transform: translateY(-2px);
+  transform: translate3d(0, -2px, 0);
   box-shadow: 0 25px 50px -5px rgba(0, 0, 0, 0.25);
 }
 
 .mobile-add-spell-btn:active {
-  transform: translateY(0);
+  transform: translate3d(0, 0, 0);
 }
 
 .mobile-add-spell-btn span:first-child {
@@ -1230,7 +1230,13 @@ body {
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
   z-index: 150;
-  animation: fadeIn 0.3s ease-out;
+  opacity: 0;
+  will-change: opacity;
+}
+
+.mobile-overlay.active {
+  opacity: 1;
+  animation: fadeIn 0.25s ease-out forwards;
 }
 
 /* Mobile browser header */
@@ -1302,19 +1308,23 @@ body {
 
 @keyframes slideInFromRight {
   from {
-    transform: translateX(100%);
+    transform: translate3d(100%, 0, 0);
+    opacity: 0.8;
   }
   to {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
   }
 }
 
 @keyframes slideOutToRight {
   from {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
   }
   to {
-    transform: translateX(100%);
+    transform: translate3d(100%, 0, 0);
+    opacity: 0.8;
   }
 }
 
@@ -1352,15 +1362,29 @@ body {
     border-radius: 0;
     box-shadow: none;
     overflow-y: auto;
-    transform: translateX(100%);
-    transition: transform 0.3s ease-out;
+    overflow-x: hidden;
+    transform: translate3d(100%, 0, 0);
+    will-change: transform, opacity;
     display: block;
+    opacity: 0;
+    visibility: hidden;
+    /* Prevent content jumping during animation */
+    contain: layout style paint;
+    /* Prevent scrolling on body while panel is open */
+    -webkit-overflow-scrolling: touch;
   }
 
   /* Show spell browser when mobile-open class is added */
   .spell-browser.mobile-open {
-    transform: translateX(0);
-    animation: slideInFromRight 0.3s ease-out;
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+    visibility: visible;
+    animation: slideInFromRight 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  /* Closing animation */
+  .spell-browser.mobile-closing {
+    animation: slideOutToRight 0.25s cubic-bezier(0.4, 0, 0.6, 1) forwards;
   }
 
   /* Show mobile-specific elements */
@@ -1369,6 +1393,10 @@ body {
   }
 
   .mobile-overlay {
+    display: block;
+  }
+
+  .mobile-overlay.active {
     display: block;
   }
 
@@ -1405,13 +1433,13 @@ body {
 
   .header-subtitle {
     font-size: 1rem;
-  }
-
-  /* Spell filters adjustments for mobile */
+  } /* Spell filters adjustments for mobile */
   .spell-list-container {
     height: 100%;
     display: flex;
     flex-direction: column;
+    /* Optimize rendering during animations */
+    will-change: auto;
   }
 
   .spell-browser-header,
@@ -1419,6 +1447,11 @@ body {
   .spell-list-content {
     padding-left: var(--space-4);
     padding-right: var(--space-4);
+  }
+
+  .spell-list-content {
+    /* Prevent content jumps during animation */
+    contain: layout;
   }
 
   .spell-details-grid {
